@@ -28,6 +28,8 @@ class IStreamForm(FlaskForm):
     output = FieldList(FormField(OutputUrlForm), 'Output:')
     visible = BooleanField('Visible for clients:', validators=[])
     iarc = IntegerField('Age Rating:', validators=[InputRequired(), NumberRange(min=0)])
+    view_count = IntegerField('Views count', validators=[InputRequired(), NumberRange(min=0)],
+                              render_kw={'readonly': 'true'})
     submit = SubmitField('Confirm')
 
     def make_entry(self) -> IStream:
@@ -42,6 +44,7 @@ class IStreamForm(FlaskForm):
         entry.price = self.price.data
         entry.visible = self.visible.data
         entry.iarc = self.iarc.data
+        entry.view_count = self.view_count.data
         entry.output = self.output.data
         # for entry in self.extra_config_fields.entries:
         # entry.extra_config_fields = self.extra_config_fields.get_data()
