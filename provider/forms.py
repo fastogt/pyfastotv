@@ -8,6 +8,8 @@ import pyfastocloud_models.constants as constants
 class SignupForm(FlaskForm):
     email = StringField('Email:',
                         validators=[InputRequired(), Email(message='Invalid email'), Length(max=30)])
+    first_name = StringField('First name:', validators=[InputRequired(), Length(max=64)])
+    last_name = StringField('Last name:', validators=[InputRequired(), Length(max=64)])
     password = PasswordField('Password:', validators=[InputRequired(), Length(min=3, max=80)])
     country = SelectField('Country:', coerce=str, validators=[InputRequired()],
                           choices=constants.AVAILABLE_COUNTRIES)
