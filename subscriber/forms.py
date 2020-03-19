@@ -7,7 +7,7 @@ from pyfastocloud_models.subscriber.login.entry import SubscriberUser
 import pyfastocloud_models.constants as constants
 
 
-class SignupForm(FlaskForm):
+class SignUpForm(FlaskForm):
     AVAILABLE_STATUSES = [(SubscriberUser.Status.NOT_ACTIVE, 'Not active'), (SubscriberUser.Status.ACTIVE, 'Active'),
                           (SubscriberUser.Status.DELETED, 'Deleted')]
 
@@ -47,3 +47,10 @@ class SignupForm(FlaskForm):
         subscriber.exp_date = self.exp_date.data
         subscriber.max_devices_count = self.max_devices_count.data
         return subscriber
+
+
+class SignInForm(FlaskForm):
+    email = StringField('Email:',
+                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=30)])
+    password = PasswordField('Password:', validators=[InputRequired(), Length(min=3, max=80)])
+    submit = SubmitField('Sign In')

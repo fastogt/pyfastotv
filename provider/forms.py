@@ -5,7 +5,7 @@ from wtforms.validators import InputRequired, Length, Email
 import pyfastocloud_models.constants as constants
 
 
-class SignupForm(FlaskForm):
+class SignUpForm(FlaskForm):
     email = StringField('Email:',
                         validators=[InputRequired(), Email(message='Invalid email'), Length(max=30)])
     first_name = StringField('First name:', validators=[InputRequired(), Length(max=64)])
