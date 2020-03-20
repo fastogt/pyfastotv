@@ -76,7 +76,6 @@ class HardwareStreamForm(IStreamForm):
     have_video = BooleanField('Have video:', validators=[])
     have_audio = BooleanField('Have audio:', validators=[])
     loop = BooleanField('Loop:', validators=[])
-    avformat = BooleanField('Avformat:', validators=[])
     restart_attempts = IntegerField('Max restart attempts and frozen:',
                                     validators=[NumberRange(1, 1000)])
     auto_exit_time = IntegerField('Auto exit time:', validators=[])
@@ -93,7 +92,6 @@ class HardwareStreamForm(IStreamForm):
         entry.have_audio = self.have_audio.data
         entry.log_level = self.log_level.data
         entry.loop = self.loop.data
-        entry.avformat = self.avformat.data
         entry.restart_attempts = self.restart_attempts.data
         entry.auto_exit_time = self.auto_exit_time.data
         entry.extra_config_fields = self.extra_config_fields.data
