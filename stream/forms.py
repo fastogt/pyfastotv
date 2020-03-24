@@ -1,13 +1,12 @@
-from flask_wtf import FlaskForm
-
-from wtforms.validators import InputRequired, Length, NumberRange
-from wtforms.fields import StringField, SubmitField, SelectField, IntegerField, FormField, BooleanField, FloatField, \
-    DateTimeField, FieldList
-
 import pyfastocloud_models.constants as constants
+from flask_wtf import FlaskForm
 from pyfastocloud_models.stream.entry import IStream, HardwareStream, ProxyStream, RelayStream, EncodeStream, \
     TimeshiftRecorderStream, CatchupStream, TimeshiftPlayerStream, TestLifeStream, VodRelayStream, VodEncodeStream, \
     ProxyVodStream, CodRelayStream, CodEncodeStream, StreamLogLevel, EventStream
+from wtforms.fields import StringField, SubmitField, SelectField, IntegerField, FormField, BooleanField, FloatField, \
+    DateTimeField, FieldList
+from wtforms.validators import InputRequired, Length, NumberRange
+
 from app.common.common_forms import SizeForm, LogoForm, RationalForm, RSVGLogoForm, OutputUrlForm, InputUrlForm
 
 

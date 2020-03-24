@@ -1,8 +1,7 @@
 from flask_wtf import FlaskForm
+from pyfastocloud_models.series.entry import Serial
 from wtforms.fields import StringField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import InputRequired, NumberRange
-
-from pyfastocloud_models.series.entry import Serial
 
 
 class SerialForm(FlaskForm):

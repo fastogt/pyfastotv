@@ -1,10 +1,8 @@
+import pyfastocloud_models.constants as constants
 from flask_wtf import FlaskForm
-
+from pyfastocloud_models.subscriber.login.entry import SubscriberUser
 from wtforms.fields import StringField, PasswordField, SubmitField, SelectField, IntegerField, DateTimeField
 from wtforms.validators import InputRequired, Length, Email, NumberRange
-
-from pyfastocloud_models.subscriber.login.entry import SubscriberUser
-import pyfastocloud_models.constants as constants
 
 
 class SignUpForm(FlaskForm):

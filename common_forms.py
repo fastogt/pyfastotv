@@ -1,10 +1,9 @@
+import pyfastocloud_models.constants as constants
+from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy
 from wtforms import Form
 from wtforms.fields import StringField, IntegerField, FormField, FloatField, SelectField, BooleanField, Field
 from wtforms.validators import InputRequired, Length, NumberRange
 from wtforms.widgets import TextInput
-
-import pyfastocloud_models.constants as constants
-from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy
 
 
 class UrlForm(Form):

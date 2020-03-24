@@ -1,10 +1,10 @@
+import pyfastocloud_models.constants as constants
 from flask_wtf import FlaskForm
+from pyfastocloud_models.service.entry import ServiceSettings, ProviderPair
 from wtforms.fields import StringField, SubmitField, MultipleFileField, SelectField, FormField
 from wtforms.validators import InputRequired, Length, Email
 
 from app.common.common_forms import HostAndPortForm
-from pyfastocloud_models.service.entry import ServiceSettings, ProviderPair
-import pyfastocloud_models.constants as constants
 
 
 class ServiceSettingsForm(FlaskForm):
