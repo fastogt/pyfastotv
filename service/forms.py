@@ -17,9 +17,6 @@ class ServiceSettingsForm(FlaskForm):
     feedback_directory = StringField('Feedback directory:', validators=[InputRequired()])
     timeshifts_directory = StringField('Timeshifts directory:', validators=[InputRequired()])
     hls_directory = StringField('Hls directory:', validators=[InputRequired()])
-    playlists_directory = StringField('Playlist directory:', validators=[InputRequired()])
-    dvb_directory = StringField('DVB directory:', validators=[InputRequired()])
-    capture_card_directory = StringField('Capture card directory:', validators=[InputRequired()])
     vods_in_directory = StringField('Vods in directory:', validators=[InputRequired()])
     vods_directory = StringField('Vods out directory:', validators=[InputRequired()])
     cods_directory = StringField('Cods out directory:', validators=[InputRequired()])
@@ -38,9 +35,6 @@ class ServiceSettingsForm(FlaskForm):
         settings.feedback_directory = self.feedback_directory.data
         settings.timeshifts_directory = self.timeshifts_directory.data
         settings.hls_directory = self.hls_directory.data
-        settings.playlists_directory = self.playlists_directory.data
-        settings.dvb_directory = self.dvb_directory.data
-        settings.capture_card_directory = self.capture_card_directory.data
         settings.vods_in_directory = self.vods_in_directory.data
         settings.vods_directory = self.vods_directory.data
         settings.cods_directory = self.cods_directory.data
