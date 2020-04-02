@@ -38,7 +38,7 @@ class SignUpForm(FlaskForm):
         subscriber.email = self.email.data.lower()
         subscriber.first_name = self.first_name.data
         subscriber.last_name = self.last_name.data
-        subscriber.password = SubscriberUser.make_md5_hash_from_password(self.password.data)
+        subscriber.password = SubscriberUser.generate_password_hash(self.password.data)
         subscriber.country = self.country.data
         subscriber.language = self.language.data
         subscriber.status = self.status.data
