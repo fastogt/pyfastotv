@@ -11,12 +11,12 @@ from app.common.common_forms import SizeForm, LogoForm, RationalForm, RSVGLogoFo
 
 
 class IStreamForm(FlaskForm):
-    tvg_id = StringField('Epg ID:',
-                         validators=[
-                             Length(min=constants.MIN_STREAM_TVG_ID_LENGTH, max=constants.MAX_STREAM_TVG_ID_LENGTH)])
     name = StringField('Name:', default='Stream',
                        validators=[InputRequired(),
                                    Length(min=constants.MIN_STREAM_NAME_LENGTH, max=constants.MAX_STREAM_NAME_LENGTH)])
+    tvg_id = StringField('Epg ID:',
+                         validators=[
+                             Length(min=constants.MIN_STREAM_TVG_ID_LENGTH, max=constants.MAX_STREAM_TVG_ID_LENGTH)])
     tvg_name = StringField('Tvg-Name:', validators=[])
     tvg_logo = StringField('Icon:',
                            validators=[InputRequired(),
@@ -24,19 +24,19 @@ class IStreamForm(FlaskForm):
     group = StringField('Group:', validators=[])
     price = FloatField('Price:',
                        validators=[InputRequired(), NumberRange(constants.MIN_PRICE, constants.MAX_PRICE)])
-    output = FieldList(FormField(OutputUrlForm), 'Output:')
     visible = BooleanField('Visible for clients:', validators=[])
     iarc = IntegerField('Age Rating:', validators=[InputRequired(), NumberRange(min=0)])
     view_count = IntegerField('Views count', validators=[InputRequired(), NumberRange(min=0)],
                               render_kw={'readonly': 'true'})
+    output = FieldList(FormField(OutputUrlForm), 'Output:')
     submit = SubmitField('Confirm')
 
     def make_entry(self) -> IStream:
         return self.update_entry(IStream())
 
     def update_entry(self, entry: IStream) -> IStream:
-        entry.tvg_id = self.tvg_id.data
         entry.name = self.name.data
+        entry.tvg_id = self.tvg_id.data
         entry.tvg_name = self.tvg_name.data
         entry.tvg_logo = self.tvg_logo.data
         entry.group = self.group.data
