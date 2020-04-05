@@ -13,16 +13,16 @@ class UrlForm(Form):
 
 
 class HttpProxyForm(Form):
-    url = StringField('Url:', validators=[])
+    uri = StringField('Url:', validators=[])
     user = StringField('User:', validators=[])
     password = StringField('Password:', validators=[])
 
     def get_data(self) -> HttpProxy:
         proxy = HttpProxy()
         proxy_data = self.data
-        proxy.path = proxy_data[HttpProxy.URI_FIELD]
-        proxy.x = proxy_data[HttpProxy.USER_FIELD]
-        proxy.y = proxy_data[HttpProxy.PASSWORD_FIELD]
+        proxy.uri = proxy_data[HttpProxy.URI_FIELD]
+        proxy.user = proxy_data[HttpProxy.USER_FIELD]
+        proxy.password = proxy_data[HttpProxy.PASSWORD_FIELD]
         return proxy
 
 
