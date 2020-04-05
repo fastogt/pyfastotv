@@ -14,13 +14,13 @@ class IStreamForm(FlaskForm):
     tvg_id = StringField('Epg ID:',
                          validators=[
                              Length(min=constants.MIN_STREAM_TVG_ID_LENGTH, max=constants.MAX_STREAM_TVG_ID_LENGTH)])
-    name = StringField('Name:',
+    name = StringField('Name:', default='Stream',
                        validators=[InputRequired(),
                                    Length(min=constants.MIN_STREAM_NAME_LENGTH, max=constants.MAX_STREAM_NAME_LENGTH)])
     tvg_name = StringField('Tvg-Name:', validators=[])
     tvg_logo = StringField('Icon:',
                            validators=[InputRequired(),
-                                       Length(min=constants.MIN_URL_LENGTH, max=constants.MAX_URL_LENGTH)])
+                                       Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
     group = StringField('Group:', validators=[])
     price = FloatField('Price:',
                        validators=[InputRequired(), NumberRange(constants.MIN_PRICE, constants.MAX_PRICE)])
@@ -239,7 +239,7 @@ class VodBaseStreamForm(FlaskForm):
     description = StringField('Description:', validators=[])
     trailer_url = StringField('Trailer URL:',
                               validators=[InputRequired(),
-                                          Length(min=constants.MIN_URL_LENGTH, max=constants.MAX_URL_LENGTH)])
+                                          Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
     user_score = FloatField('User score:', validators=[InputRequired(), NumberRange(min=0, max=100)])
     prime_date = DateTimeField('Prime time:', validators=[InputRequired()])
     country = StringField('Country:',

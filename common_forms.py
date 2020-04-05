@@ -9,7 +9,7 @@ from wtforms.widgets import TextInput
 class UrlForm(Form):
     id = IntegerField('Id:', validators=[InputRequired()], render_kw={'readonly': 'true'})
     uri = StringField('Url:', validators=[InputRequired(),
-                                          Length(min=constants.MIN_URL_LENGTH, max=constants.MAX_URL_LENGTH)])
+                                          Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
 
 
 class HttpProxyForm(Form):
@@ -20,9 +20,9 @@ class HttpProxyForm(Form):
     def get_data(self) -> HttpProxy:
         proxy = HttpProxy()
         proxy_data = self.data
-        proxy.path = proxy_data['url']
-        proxy.x = proxy_data['user']
-        proxy.y = proxy_data['password']
+        proxy.path = proxy_data[HttpProxy.URI_FIELD]
+        proxy.x = proxy_data[HttpProxy.USER_FIELD]
+        proxy.y = proxy_data[HttpProxy.PASSWORD_FIELD]
         return proxy
 
 

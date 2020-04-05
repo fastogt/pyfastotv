@@ -23,7 +23,7 @@ def gen_extension(uri: str) -> str:
 
 class EpgForm(FlaskForm):
     uri = StringField('Url:', validators=[InputRequired(),
-                                          Length(min=constants.MIN_URL_LENGTH, max=constants.MAX_URL_LENGTH)])
+                                          Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
     extension = StringField('Extension:', validators=[])
     apply = SubmitField('Apply')
 
