@@ -1,5 +1,5 @@
 import pyfastocloud_models.constants as constants
-from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy
+from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy, Point
 from wtforms import Form
 from wtforms.fields import StringField, IntegerField, FormField, FloatField, SelectField, BooleanField, Field
 from wtforms.validators import InputRequired, Length, NumberRange
@@ -85,15 +85,13 @@ class LogoForm(Form):
     x = IntegerField('Pos x:', validators=[InputRequired()])
     y = IntegerField('Pos y:', validators=[InputRequired()])
     size = FormField(SizeForm, 'Size:', validators=[])
-    alpha = FloatField('Alpha:',
-                       validators=[InputRequired(), NumberRange(constants.MIN_ALPHA, constants.MAX_ALPHA)])
+    alpha = FloatField('Alpha:', validators=[InputRequired(), NumberRange(Logo.MIN_LOGO_ALPHA, Logo.MAX_LOGO_ALPHA)])
 
     def get_data(self) -> Logo:
         logo = Logo()
         logo_data = self.data
         logo.path = logo_data['path']
-        logo.x = logo_data['x']
-        logo.y = logo_data['y']
+        logo.position = Point(logo_data['x'], logo_data['y'])
         size = Size()
         size.width = logo_data['size']['width']
         size.height = logo_data['size']['height']
