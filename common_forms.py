@@ -63,16 +63,15 @@ class SizeForm(Form):
 
 class RSVGLogoForm(Form):
     path = StringField('Path:', validators=[])
-    x = IntegerField('Pos x:', validators=[InputRequired()])
-    y = IntegerField('Pos y:', validators=[InputRequired()])
+    x = IntegerField('Pos x:', default=0, validators=[InputRequired()])
+    y = IntegerField('Pos y:', default=0, validators=[InputRequired()])
     size = FormField(SizeForm, 'Size:', validators=[])
 
     def get_data(self) -> RSVGLogo:
         logo = RSVGLogo()
         logo_data = self.data
         logo.path = logo_data['path']
-        logo.x = logo_data['x']
-        logo.y = logo_data['y']
+        logo.position = Point(x=logo_data['x'], y=logo_data['y'])
         size = Size()
         size.width = logo_data['size']['width']
         size.height = logo_data['size']['height']
@@ -82,8 +81,8 @@ class RSVGLogoForm(Form):
 
 class LogoForm(Form):
     path = StringField('Path:', validators=[])
-    x = IntegerField('Pos x:', validators=[InputRequired()])
-    y = IntegerField('Pos y:', validators=[InputRequired()])
+    x = IntegerField('Pos x:', default=0, validators=[InputRequired()])
+    y = IntegerField('Pos y:', default=0, validators=[InputRequired()])
     size = FormField(SizeForm, 'Size:', validators=[])
     alpha = FloatField('Alpha:', validators=[InputRequired(), NumberRange(Logo.MIN_LOGO_ALPHA, Logo.MAX_LOGO_ALPHA)])
 
@@ -91,7 +90,7 @@ class LogoForm(Form):
         logo = Logo()
         logo_data = self.data
         logo.path = logo_data['path']
-        logo.position = Point(logo_data['x'], logo_data['y'])
+        logo.position = Point(x=logo_data['x'], y=logo_data['y'])
         size = Size()
         size.width = logo_data['size']['width']
         size.height = logo_data['size']['height']
