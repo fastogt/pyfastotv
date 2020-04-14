@@ -36,6 +36,7 @@ class InputUrlForm(UrlForm):
                              coerce=constants.UserAgent.coerce)
     stream_link = BooleanField('SteamLink:', validators=[])
     proxy = FormField(HttpProxyForm, 'Http proxy:', validators=[])
+    program_number = IntegerField('Program number:', validators=[], default=-1)
 
 
 class OutputUrlForm(UrlForm):
