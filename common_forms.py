@@ -37,6 +37,7 @@ class InputUrlForm(UrlForm):
     stream_link = BooleanField('SteamLink:', validators=[])
     proxy = FormField(HttpProxyForm, 'Http proxy:', validators=[])
     program_number = IntegerField('Program number:', validators=[])
+    multicast_iface = StringField('Multicast iface:', validators=[])
 
 
 class OutputUrlForm(UrlForm):
