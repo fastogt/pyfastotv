@@ -1,5 +1,5 @@
 import pyfastocloud_models.constants as constants
-from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy, Point
+from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy, Point, InputUrl
 from wtforms import Form
 from wtforms.fields import StringField, IntegerField, FormField, FloatField, SelectField, BooleanField, Field
 from wtforms.validators import InputRequired, Length, NumberRange
@@ -38,6 +38,22 @@ class InputUrlForm(UrlForm):
     proxy = FormField(HttpProxyForm, 'Http proxy:', validators=[])
     program_number = IntegerField('Program number:', validators=[])
     multicast_iface = StringField('Multicast iface:', validators=[])
+
+    def get_data(self) -> InputUrl:
+        url = InputUrl()
+        proxy_data = self.data
+        url.id = proxy_data[InputUrl.ID_FIELD]
+        url.uri = proxy_data[InputUrl.URI_FIELD]
+        if InputUrl.MULTICAST_IFACE_FIELD in proxy_data:
+            if proxy_data[InputUrl.MULTICAST_IFACE_FIELD]:
+                url.multicast_iface = proxy_data[InputUrl.MULTICAST_IFACE_FIELD]
+        if InputUrl.PROGRAM_NUMBER_FIELD in proxy_data:
+            if proxy_data[InputUrl.PROGRAM_NUMBER_FIELD] != constants.INVALID_PROGRAM_NUMBER:
+                url.program_number = proxy_data[InputUrl.PROGRAM_NUMBER_FIELD]
+        if InputUrl.PROXY_FIELD in proxy_data:
+            if proxy_data[InputUrl.PROXY_FIELD][HttpProxy.URI_FIELD]:
+                url.proxy = HttpProxy.make_entry(proxy_data[InputUrl.PROXY_FIELD])
+        return url
 
 
 class OutputUrlForm(UrlForm):

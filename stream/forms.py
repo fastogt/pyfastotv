@@ -84,7 +84,10 @@ class HardwareStreamForm(IStreamForm):
         return self.update_entry(HardwareStream())
 
     def update_entry(self, entry: HardwareStream):
-        entry.input = self.input.data
+        inputs = []
+        for inp in self.input:
+            inputs.append(inp.get_data())
+        entry.input = inputs
 
         entry.audio_select = self.audio_select.data
         entry.have_video = self.have_video.data
