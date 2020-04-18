@@ -193,6 +193,7 @@ class CatchupStreamForm(TimeshiftRecorderStreamForm):
 
 
 class TimeshiftPlayerStreamForm(RelayStreamForm):
+    input = FieldList(FormField(InputUrlForm), 'Input:', default=[])
     timeshift_dir = StringField('Chunks directory:', validators=[InputRequired()])
     timeshift_delay = IntegerField('Delay:', validators=[InputRequired(),
                                                          NumberRange(constants.MIN_TIMESHIFT_DELAY,
