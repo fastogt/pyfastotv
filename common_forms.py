@@ -48,7 +48,7 @@ class InputUrlForm(UrlForm):
             if proxy_data[InputUrl.MULTICAST_IFACE_FIELD]:
                 url.multicast_iface = proxy_data[InputUrl.MULTICAST_IFACE_FIELD]
         if InputUrl.PROGRAM_NUMBER_FIELD in proxy_data:
-            if proxy_data[InputUrl.PROGRAM_NUMBER_FIELD] != constants.INVALID_PROGRAM_NUMBER:
+            if proxy_data[InputUrl.PROGRAM_NUMBER_FIELD] != InputUrl.INVALID_PROGRAM_NUMBER:
                 url.program_number = proxy_data[InputUrl.PROGRAM_NUMBER_FIELD]
         if InputUrl.PROXY_FIELD in proxy_data:
             if proxy_data[InputUrl.PROXY_FIELD][HttpProxy.URI_FIELD]:
