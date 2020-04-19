@@ -5,9 +5,18 @@ from pyfastocloud_models.stream.entry import IStream, HardwareStream, ProxyStrea
     ProxyVodStream, CodRelayStream, CodEncodeStream, StreamLogLevel, EventStream
 from wtforms.fields import StringField, SubmitField, SelectField, IntegerField, FormField, BooleanField, FloatField, \
     DateTimeField, FieldList
-from wtforms.validators import InputRequired, Length, NumberRange
+from wtforms.validators import InputRequired, Length, NumberRange, Optional
 
 from app.common.common_forms import SizeForm, LogoForm, RationalForm, RSVGLogoForm, OutputUrlForm, InputUrlForm
+
+
+class OptionalFormField(FormField):
+    def process(self, formdata, *args, **kwargs):
+        self._formdata = formdata
+        return super(OptionalFormField, self).process(formdata, *args, **kwargs)
+
+    def validate(self, *args, **kwargs):
+        return True
 
 
 class IStreamForm(FlaskForm):
@@ -15,8 +24,9 @@ class IStreamForm(FlaskForm):
                        validators=[InputRequired(),
                                    Length(min=constants.MIN_STREAM_NAME_LENGTH, max=constants.MAX_STREAM_NAME_LENGTH)])
     tvg_id = StringField('Epg ID:',
-                         validators=[
-                             Length(min=constants.MIN_STREAM_TVG_ID_LENGTH, max=constants.MAX_STREAM_TVG_ID_LENGTH)])
+                         validators=[Optional(),
+                                     Length(min=constants.MIN_STREAM_TVG_ID_LENGTH,
+                                            max=constants.MAX_STREAM_TVG_ID_LENGTH)])
     tvg_name = StringField('Tvg-Name:', validators=[])
     tvg_logo = StringField('Icon:',
                            validators=[InputRequired(),
@@ -25,7 +35,8 @@ class IStreamForm(FlaskForm):
     price = FloatField('Price:',
                        validators=[InputRequired(), NumberRange(constants.MIN_PRICE, constants.MAX_PRICE)])
     visible = BooleanField('Visible for clients:', validators=[])
-    iarc = IntegerField('Age Rating:', validators=[InputRequired(), NumberRange(min=0)])
+    iarc = IntegerField('Age Rating:',
+                        validators=[InputRequired(), NumberRange(min=constants.MIN_IARC, max=constants.MAX_IARC)])
     view_count = IntegerField('Views count', validators=[InputRequired(), NumberRange(min=0)],
                               render_kw={'readonly': 'true'})
     output = FieldList(FormField(OutputUrlForm), 'Output:')
@@ -36,10 +47,13 @@ class IStreamForm(FlaskForm):
 
     def update_entry(self, entry: IStream) -> IStream:
         entry.name = self.name.data
-        entry.tvg_id = self.tvg_id.data
-        entry.tvg_name = self.tvg_name.data
+        if self.tvg_id.data:
+            entry.tvg_id = self.tvg_id.data
+        if self.tvg_name.data:
+            entry.tvg_name = self.tvg_name.data
         entry.tvg_logo = self.tvg_logo.data
-        entry.group = self.group.data
+        if self.group.data:
+            entry.group = self.group.data
         entry.price = self.price.data
         entry.visible = self.visible.data
         entry.iarc = self.iarc.data
@@ -74,7 +88,8 @@ class HardwareStreamForm(IStreamForm):
     log_level = SelectField('Log level:', validators=[], choices=AVAILABLE_LOG_LEVELS_PAIRS,
                             coerce=StreamLogLevel.coerce)
     audio_select = IntegerField('Audio select:',
-                                validators=[InputRequired(), NumberRange(constants.INVALID_AUDIO_SELECT, 1000)])
+                                validators=[Optional(), NumberRange(constants.MIN_AUDIO_CHANNELS_COUNT,
+                                                                    constants.MAX_AUDIO_CHANNELS_COUNT)])
     have_video = BooleanField('Have video:', validators=[])
     have_audio = BooleanField('Have audio:', validators=[])
     loop = BooleanField('Loop:', validators=[])
@@ -92,7 +107,9 @@ class HardwareStreamForm(IStreamForm):
             inputs.append(inp.get_data())
         entry.input = inputs
 
-        entry.audio_select = self.audio_select.data
+        if self.audio_select.data:
+            entry.audio_select = self.audio_select.data
+
         entry.have_video = self.have_video.data
         entry.have_audio = self.have_audio.data
         entry.log_level = self.log_level.data
@@ -123,8 +140,8 @@ class EncodeStreamForm(HardwareStreamForm):
     relay_audio = BooleanField('Relay audio:', validators=[])
     deinterlace = BooleanField('Deinterlace:', validators=[])
     frame_rate = IntegerField('Frame rate:',
-                              validators=[InputRequired(),
-                                          NumberRange(constants.INVALID_FRAME_RATE, constants.MAX_FRAME_RATE)])
+                              validators=[Optional(),
+                                          NumberRange(constants.MIN_FRAME_RATE, constants.MAX_FRAME_RATE)])
     volume = FloatField('Volume:',
                         validators=[InputRequired(), NumberRange(constants.MIN_VOLUME, constants.MAX_VOLUME)])
     video_codec = SelectField('Video codec:', validators=[],
@@ -132,14 +149,14 @@ class EncodeStreamForm(HardwareStreamForm):
     audio_codec = SelectField('Audio codec:', validators=[],
                               choices=constants.AVAILABLE_AUDIO_CODECS)
     audio_channels_count = IntegerField('Audio channels count:',
-                                        validators=[InputRequired(), NumberRange(constants.INVALID_AUDIO_CHANNELS_COUNT,
-                                                                                 constants.MAX_AUDIO_CHANNELS_COUNT)])
-    size = FormField(SizeForm, 'Size:', validators=[])
-    video_bit_rate = IntegerField('Video bit rate:', validators=[InputRequired()])
-    audio_bit_rate = IntegerField('Audio bit rate:', validators=[InputRequired()])
-    logo = FormField(LogoForm, 'Logo:', validators=[])
-    rsvg_logo = FormField(RSVGLogoForm, 'RSVG Logo:', validators=[])
-    aspect_ratio = FormField(RationalForm, 'Aspect ratio:', validators=[])
+                                        validators=[Optional(), NumberRange(constants.MIN_AUDIO_CHANNELS_COUNT,
+                                                                            constants.MAX_AUDIO_CHANNELS_COUNT)])
+    size = OptionalFormField(SizeForm, 'Size:', validators=[])
+    video_bit_rate = IntegerField('Video bit rate:', validators=[Optional()])
+    audio_bit_rate = IntegerField('Audio bit rate:', validators=[Optional()])
+    logo = OptionalFormField(LogoForm, 'Logo:', validators=[])
+    rsvg_logo = OptionalFormField(RSVGLogoForm, 'RSVG Logo:', validators=[])
+    aspect_ratio = OptionalFormField(RationalForm, 'Aspect ratio:', validators=[])
 
     def make_entry(self):
         return self.update_entry(EncodeStream())
@@ -148,17 +165,29 @@ class EncodeStreamForm(HardwareStreamForm):
         entry.relay_video = self.relay_video.data
         entry.relay_audio = self.relay_audio.data
         entry.deinterlace = self.deinterlace.data
-        entry.frame_rate = self.frame_rate.data
+        if self.frame_rate.data:
+            entry.frame_rate = self.frame_rate.data
         entry.volume = self.volume.data
         entry.video_codec = self.video_codec.data
         entry.audio_codec = self.audio_codec.data
-        entry.audio_channels_count = self.audio_channels_count.data
-        entry.size = self.size.get_data()
-        entry.video_bit_rate = self.video_bit_rate.data
-        entry.audio_bit_rate = self.audio_bit_rate.data
-        entry.logo = self.logo.get_data()
-        entry.rsvg_logo = self.rsvg_logo.get_data()
-        entry.aspect_ratio = self.aspect_ratio.get_data()
+        if self.audio_channels_count.data:
+            entry.audio_channels_count = self.audio_channels_count.data
+        size = self.size.get_data()
+        if size.is_valid():
+            entry.size = size
+        if self.video_bit_rate.data:
+            entry.video_bit_rate = self.video_bit_rate.data
+        if self.audio_bit_rate.data:
+            entry.audio_bit_rate = self.audio_bit_rate.data
+        logo = self.logo.get_data()
+        if logo.is_valid():
+            entry.logo = self.logo
+        rsvg_logo = self.rsvg_logo.get_data()
+        if rsvg_logo.is_valid():
+            entry.rsvg_logo = rsvg_logo
+        aspect_ratio = self.aspect_ratio.get_data()
+        if aspect_ratio.is_valid():
+            entry.aspect_ratio = aspect_ratio
         return super(EncodeStreamForm, self).update_entry(entry)
 
 

@@ -1,5 +1,6 @@
 import pyfastocloud_models.constants as constants
-from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy, Point, InputUrl, OutputUrl
+from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy, Point, InputUrl, \
+    OutputUrl
 from wtforms import Form
 from wtforms.fields import StringField, IntegerField, FormField, FloatField, SelectField, BooleanField, Field
 from wtforms.validators import InputRequired, Length, NumberRange, Optional
@@ -110,8 +111,8 @@ class RSVGLogoForm(Form):
 
 class LogoForm(Form):
     path = StringField('Path:', validators=[])
-    x = IntegerField('Pos x:', default=0, validators=[InputRequired()])
-    y = IntegerField('Pos y:', default=0, validators=[InputRequired()])
+    x = IntegerField('Pos x:', validators=[InputRequired()])
+    y = IntegerField('Pos y:', validators=[InputRequired()])
     size = FormField(SizeForm, 'Size:', validators=[])
     alpha = FloatField('Alpha:', validators=[InputRequired(), NumberRange(Logo.MIN_LOGO_ALPHA, Logo.MAX_LOGO_ALPHA)])
 
