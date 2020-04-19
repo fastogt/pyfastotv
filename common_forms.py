@@ -1,8 +1,8 @@
 import pyfastocloud_models.constants as constants
-from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy, Point, InputUrl
+from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy, Point, InputUrl, OutputUrl
 from wtforms import Form
 from wtforms.fields import StringField, IntegerField, FormField, FloatField, SelectField, BooleanField, Field
-from wtforms.validators import InputRequired, Length, NumberRange
+from wtforms.validators import InputRequired, Length, NumberRange, Optional
 from wtforms.widgets import TextInput
 
 
@@ -32,11 +32,11 @@ class InputUrlForm(UrlForm):
                              (constants.UserAgent.CHROME, 'Chrome'), (constants.UserAgent.MOZILLA, 'Mozilla'),
                              (constants.UserAgent.SAFARI, 'Safari')]
 
-    user_agent = SelectField('User agent:', validators=[InputRequired()], choices=AVAILABLE_USER_AGENTS,
+    user_agent = SelectField('User agent:', validators=[], choices=AVAILABLE_USER_AGENTS,
                              coerce=constants.UserAgent.coerce)
     stream_link = BooleanField('SteamLink:', validators=[])
     proxy = FormField(HttpProxyForm, 'Http proxy:', validators=[])
-    program_number = IntegerField('Program number:', validators=[])
+    program_number = IntegerField('Program number:', validators=[Optional()])
     multicast_iface = StringField('Multicast iface:', validators=[])
 
     def get_data(self) -> InputUrl:
@@ -48,28 +48,39 @@ class InputUrlForm(UrlForm):
             if proxy_data[InputUrl.MULTICAST_IFACE_FIELD]:
                 url.multicast_iface = proxy_data[InputUrl.MULTICAST_IFACE_FIELD]
         if InputUrl.PROGRAM_NUMBER_FIELD in proxy_data:
-            if proxy_data[InputUrl.PROGRAM_NUMBER_FIELD] != InputUrl.INVALID_PROGRAM_NUMBER:
+            if proxy_data[InputUrl.PROGRAM_NUMBER_FIELD]:
                 url.program_number = proxy_data[InputUrl.PROGRAM_NUMBER_FIELD]
         if InputUrl.PROXY_FIELD in proxy_data:
             if proxy_data[InputUrl.PROXY_FIELD][HttpProxy.URI_FIELD]:
                 url.proxy = HttpProxy.make_entry(proxy_data[InputUrl.PROXY_FIELD])
+        if InputUrl.STREAM_LINK_FIELD in proxy_data:
+            url.stream_link = proxy_data[InputUrl.STREAM_LINK_FIELD]
         return url
 
 
 class OutputUrlForm(UrlForm):
     AVAILABLE_HLS_TYPES = [(constants.HlsType.HLS_PULL, 'PULL'), (constants.HlsType.HLS_PUSH, 'PUSH')]
 
-    http_root = StringField('Http root:',
-                            validators=[InputRequired(),
-                                        Length(min=constants.MIN_PATH_LENGTH, max=constants.MAX_PATH_LENGTH)],
-                            render_kw={'readonly': 'true'})
-    hls_type = SelectField('HLS Type:', validators=[InputRequired()], choices=AVAILABLE_HLS_TYPES,
-                           coerce=constants.HlsType.coerce)
+    http_root = StringField('Http root:', validators=[], render_kw={'readonly': 'true'})
+    hls_type = SelectField('HLS Type:', validators=[], choices=AVAILABLE_HLS_TYPES, coerce=constants.HlsType.coerce)
+
+    def get_data(self) -> OutputUrl:
+        url = OutputUrl()
+        proxy_data = self.data
+        url.id = proxy_data[OutputUrl.ID_FIELD]
+        url.uri = proxy_data[OutputUrl.URI_FIELD]
+        if OutputUrl.HTTP_ROOT_FIELD in proxy_data:
+            if proxy_data[OutputUrl.HTTP_ROOT_FIELD]:
+                url.http_root = proxy_data[OutputUrl.HTTP_ROOT_FIELD]
+
+        if OutputUrl.HLS_TYPE_FIELD in proxy_data:
+            url.hls_type = proxy_data[OutputUrl.HLS_TYPE_FIELD]
+        return url
 
 
 class SizeForm(Form):
-    width = IntegerField('Width:', validators=[InputRequired()])
-    height = IntegerField('Height:', validators=[InputRequired()])
+    width = IntegerField('Width:', validators=[])
+    height = IntegerField('Height:', validators=[])
 
     def get_data(self) -> Size:
         size = Size()
@@ -81,8 +92,8 @@ class SizeForm(Form):
 
 class RSVGLogoForm(Form):
     path = StringField('Path:', validators=[])
-    x = IntegerField('Pos x:', default=0, validators=[InputRequired()])
-    y = IntegerField('Pos y:', default=0, validators=[InputRequired()])
+    x = IntegerField('Pos x:', validators=[])
+    y = IntegerField('Pos y:', validators=[])
     size = FormField(SizeForm, 'Size:', validators=[])
 
     def get_data(self) -> RSVGLogo:

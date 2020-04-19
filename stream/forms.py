@@ -44,7 +44,10 @@ class IStreamForm(FlaskForm):
         entry.visible = self.visible.data
         entry.iarc = self.iarc.data
         entry.view_count = self.view_count.data
-        entry.output = self.output.data
+        outputs = []
+        for inp in self.output:
+            outputs.append(inp.get_data())
+        entry.output = outputs
         # for entry in self.extra_config_fields.entries:
         # entry.extra_config_fields = self.extra_config_fields.get_data()
         return entry
