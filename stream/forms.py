@@ -274,7 +274,7 @@ class VodBaseStreamForm(FlaskForm):
 
     description = StringField('Description:', validators=[])
     trailer_url = StringField('Trailer URL:',
-                              validators=[InputRequired(),
+                              validators=[Optional(),
                                           Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
     user_score = FloatField('User score:', validators=[InputRequired(), NumberRange(min=0, max=100)])
     prime_date = DateTimeField('Prime time:', validators=[InputRequired()])
@@ -291,7 +291,8 @@ class ProxyVodStreamForm(ProxyStreamForm, VodBaseStreamForm):
 
     def update_entry(self, entry: ProxyVodStream):
         entry.description = self.description.data
-        entry.trailer_url = self.trailer_url.data
+        if self.trailer_url.data:
+            entry.trailer_url = self.trailer_url.data
         entry.user_score = self.user_score.data
         entry.prime_date = self.prime_date.data
         entry.country = self.country.data
@@ -306,7 +307,8 @@ class VodRelayStreamForm(RelayStreamForm, VodBaseStreamForm):
 
     def update_entry(self, entry: VodRelayStream):
         entry.description = self.description.data
-        entry.trailer_url = self.trailer_url.data
+        if self.trailer_url.data:
+            entry.trailer_url = self.trailer_url.data
         entry.user_score = self.user_score.data
         entry.prime_date = self.prime_date.data
         entry.country = self.country.data
@@ -321,7 +323,8 @@ class VodEncodeStreamForm(EncodeStreamForm, VodBaseStreamForm):
 
     def update_entry(self, entry: VodEncodeStream):
         entry.description = self.description.data
-        entry.trailer_url = self.trailer_url.data
+        if self.trailer_url.data:
+            entry.trailer_url = self.trailer_url.data
         entry.user_score = self.user_score.data
         entry.prime_date = self.prime_date.data
         entry.country = self.country.data
