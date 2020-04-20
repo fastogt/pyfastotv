@@ -47,13 +47,10 @@ class IStreamForm(FlaskForm):
 
     def update_entry(self, entry: IStream) -> IStream:
         entry.name = self.name.data
-        if self.tvg_id.data:
-            entry.tvg_id = self.tvg_id.data
-        if self.tvg_name.data:
-            entry.tvg_name = self.tvg_name.data
+        entry.tvg_id = self.tvg_id.data
+        entry.tvg_name = self.tvg_name.data
         entry.tvg_logo = self.tvg_logo.data
-        if self.group.data:
-            entry.group = self.group.data
+        entry.group = self.group.data
         entry.price = self.price.data
         entry.visible = self.visible.data
         entry.iarc = self.iarc.data
@@ -291,8 +288,7 @@ class ProxyVodStreamForm(ProxyStreamForm, VodBaseStreamForm):
 
     def update_entry(self, entry: ProxyVodStream):
         entry.description = self.description.data
-        if self.trailer_url.data:
-            entry.trailer_url = self.trailer_url.data
+        entry.trailer_url = self.trailer_url.data
         entry.user_score = self.user_score.data
         entry.prime_date = self.prime_date.data
         entry.country = self.country.data
@@ -307,8 +303,7 @@ class VodRelayStreamForm(RelayStreamForm, VodBaseStreamForm):
 
     def update_entry(self, entry: VodRelayStream):
         entry.description = self.description.data
-        if self.trailer_url.data:
-            entry.trailer_url = self.trailer_url.data
+        entry.trailer_url = self.trailer_url.data
         entry.user_score = self.user_score.data
         entry.prime_date = self.prime_date.data
         entry.country = self.country.data
@@ -323,8 +318,7 @@ class VodEncodeStreamForm(EncodeStreamForm, VodBaseStreamForm):
 
     def update_entry(self, entry: VodEncodeStream):
         entry.description = self.description.data
-        if self.trailer_url.data:
-            entry.trailer_url = self.trailer_url.data
+        entry.trailer_url = self.trailer_url.data
         entry.user_score = self.user_score.data
         entry.prime_date = self.prime_date.data
         entry.country = self.country.data
