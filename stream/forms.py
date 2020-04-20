@@ -178,7 +178,7 @@ class EncodeStreamForm(HardwareStreamForm):
             entry.audio_bit_rate = self.audio_bit_rate.data
         logo = self.logo.get_data()
         if logo.is_valid():
-            entry.logo = self.logo
+            entry.logo = logo
         rsvg_logo = self.rsvg_logo.get_data()
         if rsvg_logo.is_valid():
             entry.rsvg_logo = rsvg_logo
