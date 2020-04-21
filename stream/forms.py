@@ -29,7 +29,7 @@ class IStreamForm(FlaskForm):
                                             max=constants.MAX_STREAM_TVG_ID_LENGTH)])
     tvg_name = StringField('Tvg-Name:', validators=[])
     tvg_logo = StringField('Icon:',
-                           validators=[InputRequired(),
+                           validators=[Optional(),
                                        Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
     group = StringField('Group:', validators=[])
     price = FloatField('Price:',
@@ -92,7 +92,7 @@ class HardwareStreamForm(IStreamForm):
     loop = BooleanField('Loop:', validators=[])
     restart_attempts = IntegerField('Max restart attempts and frozen:',
                                     validators=[NumberRange(1, 1000)])
-    auto_exit_time = IntegerField('Auto exit time:', validators=[])
+    auto_exit_time = IntegerField('Auto exit time:', validators=[Optional()])
     extra_config_fields = StringField('Extra config args:', validators=[])
 
     def make_entry(self):
