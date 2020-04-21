@@ -104,7 +104,7 @@ class HardwareStreamForm(IStreamForm):
             inputs.append(inp.get_data())
         entry.input = inputs
 
-        if self.audio_select.data:
+        if self.audio_select.data is not None:
             entry.audio_select = self.audio_select.data
 
         entry.have_video = self.have_video.data
@@ -112,7 +112,8 @@ class HardwareStreamForm(IStreamForm):
         entry.log_level = self.log_level.data
         entry.loop = self.loop.data
         entry.restart_attempts = self.restart_attempts.data
-        entry.auto_exit_time = self.auto_exit_time.data
+        if self.auto_exit_time.data is not None:
+            entry.auto_exit_time = self.auto_exit_time.data
         entry.extra_config_fields = self.extra_config_fields.data
         return super(HardwareStreamForm, self).update_entry(entry)
 
@@ -162,19 +163,19 @@ class EncodeStreamForm(HardwareStreamForm):
         entry.relay_video = self.relay_video.data
         entry.relay_audio = self.relay_audio.data
         entry.deinterlace = self.deinterlace.data
-        if self.frame_rate.data:
+        if self.frame_rate.data is not None:
             entry.frame_rate = self.frame_rate.data
         entry.volume = self.volume.data
         entry.video_codec = self.video_codec.data
         entry.audio_codec = self.audio_codec.data
-        if self.audio_channels_count.data:
+        if self.audio_channels_count.data is not None:
             entry.audio_channels_count = self.audio_channels_count.data
         size = self.size.get_data()
         if size.is_valid():
             entry.size = size
-        if self.video_bit_rate.data:
+        if self.video_bit_rate.data is not None:
             entry.video_bit_rate = self.video_bit_rate.data
-        if self.audio_bit_rate.data:
+        if self.audio_bit_rate.data is not None:
             entry.audio_bit_rate = self.audio_bit_rate.data
         logo = self.logo.get_data()
         if logo.is_valid():
