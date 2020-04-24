@@ -73,7 +73,7 @@ class IStreamForm(FlaskForm):
     tvg_logo = StringField('Icon:',
                            validators=[Optional(),
                                        Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
-    group = TagListField('Group:', separator=',',
+    groups = TagListField('Groups:', separator=',',
                          validators=[Length(max=8, message='You can only use up to 8 groups.')])
     price = FloatField('Price:',
                        validators=[InputRequired(), NumberRange(constants.MIN_PRICE, constants.MAX_PRICE)])
@@ -93,7 +93,7 @@ class IStreamForm(FlaskForm):
         entry.tvg_id = self.tvg_id.data
         entry.tvg_name = self.tvg_name.data
         entry.tvg_logo = self.tvg_logo.data
-        entry.group = self.group.data
+        entry.groups = self.groups.data
 
         entry.price = self.price.data
         entry.visible = self.visible.data
