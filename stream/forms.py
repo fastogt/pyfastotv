@@ -92,10 +92,8 @@ class IStreamForm(FlaskForm):
 
     def update_entry(self, entry: IStream) -> IStream:
         entry.name = self.name.data
-        if self.tvg_id.data:
-            entry.tvg_id = self.tvg_id.data
-        if self.tvg_name.data:
-            entry.tvg_name = self.tvg_name.data
+        entry.tvg_id = self.tvg_id.data
+        entry.tvg_name = self.tvg_name.data
         entry.tvg_logo = self.tvg_logo.data
         entry.groups = self.groups.data
 
