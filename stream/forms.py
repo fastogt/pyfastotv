@@ -47,6 +47,8 @@ class TagListField(StringField):
         """Remove duplicates in a case insensitive, but case preserving manner"""
         d = {}
         for item in seq:
+            if item == '':
+                continue
             if item.lower() not in d:
                 d[item.lower()] = True
                 yield item
@@ -74,7 +76,7 @@ class IStreamForm(FlaskForm):
                            validators=[Optional(),
                                        Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
     groups = TagListField('Groups:', separator=',',
-                         validators=[Length(max=8, message='You can only use up to 8 groups.')])
+                          validators=[Length(max=8, message='You can only use up to 8 groups.')])
     price = FloatField('Price:',
                        validators=[InputRequired(), NumberRange(constants.MIN_PRICE, constants.MAX_PRICE)])
     visible = BooleanField('Visible for clients:', validators=[])
@@ -90,8 +92,10 @@ class IStreamForm(FlaskForm):
 
     def update_entry(self, entry: IStream) -> IStream:
         entry.name = self.name.data
-        entry.tvg_id = self.tvg_id.data
-        entry.tvg_name = self.tvg_name.data
+        if self.tvg_id.data:
+            entry.tvg_id = self.tvg_id.data
+        if self.tvg_name.data:
+            entry.tvg_name = self.tvg_name.data
         entry.tvg_logo = self.tvg_logo.data
         entry.groups = self.groups.data
 
