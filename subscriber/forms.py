@@ -11,7 +11,7 @@ class SignUpForm(FlaskForm):
                           (SubscriberUser.Status.DELETED, 'Deleted')]
 
     email = StringField('Email:',
-                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=30)])
+                        validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
     first_name = StringField('First name:', validators=[InputRequired(), Length(max=30)])
     last_name = StringField('Last name:', validators=[InputRequired(), Length(max=30)])
     password = PasswordField('Password:', validators=[InputRequired(), Length(min=3, max=80)])
