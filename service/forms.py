@@ -17,7 +17,6 @@ class ServiceSettingsForm(FlaskForm):
     feedback_directory = StringField('Feedback directory:', validators=[InputRequired()])
     timeshifts_directory = StringField('Timeshifts directory:', validators=[InputRequired()])
     hls_directory = StringField('Hls directory:', validators=[InputRequired()])
-    vods_in_directory = StringField('Vods in directory:', validators=[InputRequired()])
     vods_directory = StringField('Vods out directory:', validators=[InputRequired()])
     cods_directory = StringField('Cods out directory:', validators=[InputRequired()])
     apply = SubmitField('Apply')
@@ -35,7 +34,6 @@ class ServiceSettingsForm(FlaskForm):
         settings.feedback_directory = self.feedback_directory.data
         settings.timeshifts_directory = self.timeshifts_directory.data
         settings.hls_directory = self.hls_directory.data
-        settings.vods_in_directory = self.vods_in_directory.data
         settings.vods_directory = self.vods_directory.data
         settings.cods_directory = self.cods_directory.data
         return settings
