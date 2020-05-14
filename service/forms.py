@@ -1,7 +1,7 @@
 import pyfastocloud_models.constants as constants
 from flask_wtf import FlaskForm
 from pyfastocloud_models.service.entry import ServiceSettings, ProviderPair
-from wtforms.fields import StringField, SubmitField, MultipleFileField, SelectField, FormField
+from wtforms.fields import StringField, SubmitField, MultipleFileField, SelectField, FormField, FloatField
 from wtforms.validators import InputRequired, Length, Email
 
 from app.common.common_forms import HostAndPortForm
@@ -19,6 +19,7 @@ class ServiceSettingsForm(FlaskForm):
     hls_directory = StringField('Hls directory:', validators=[InputRequired()])
     vods_directory = StringField('Vods out directory:', validators=[InputRequired()])
     cods_directory = StringField('Cods out directory:', validators=[InputRequired()])
+    price = FloatField('Price:', validators=[InputRequired()])
     apply = SubmitField('Apply')
 
     def make_entry(self):
@@ -36,6 +37,7 @@ class ServiceSettingsForm(FlaskForm):
         settings.hls_directory = self.hls_directory.data
         settings.vods_directory = self.vods_directory.data
         settings.cods_directory = self.cods_directory.data
+        settings.price = self.price.data
         return settings
 
 
