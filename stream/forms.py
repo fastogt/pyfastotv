@@ -105,6 +105,7 @@ class IStreamForm(FlaskForm):
         for inp in self.output:
             outputs.append(inp.get_data())
         entry.output = outputs
+        entry.meta = []
         # for entry in self.extra_config_fields.entries:
         # entry.extra_config_fields = self.extra_config_fields.get_data()
         return entry

@@ -2,9 +2,10 @@ from os.path import splitext
 
 import pyfastocloud_models.constants as constants
 from flask_wtf import FlaskForm
-from pyfastocloud_models.epg.entry import Epg
 from wtforms.fields import StringField, SubmitField, FileField
 from wtforms.validators import InputRequired, Length
+
+from app.epg.entry import Epg
 
 
 def splitext_(path):
