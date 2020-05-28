@@ -35,7 +35,6 @@ class InputUrlForm(UrlForm):
 
     user_agent = SelectField('User agent:', validators=[], choices=AVAILABLE_USER_AGENTS,
                              coerce=constants.UserAgent.coerce)
-    stream_link = BooleanField('SteamLink:', validators=[])
     proxy = FormField(HttpProxyForm, 'Http proxy:', validators=[])
     program_number = IntegerField('Program number:', validators=[Optional()])
     multicast_iface = StringField('Multicast iface:', validators=[])
@@ -54,8 +53,6 @@ class InputUrlForm(UrlForm):
         if InputUrl.PROXY_FIELD in proxy_data:
             if proxy_data[InputUrl.PROXY_FIELD][HttpProxy.URI_FIELD]:
                 url.proxy = HttpProxy.make_entry(proxy_data[InputUrl.PROXY_FIELD])
-        if InputUrl.STREAM_LINK_FIELD in proxy_data:
-            url.stream_link = proxy_data[InputUrl.STREAM_LINK_FIELD]
         return url
 
 
