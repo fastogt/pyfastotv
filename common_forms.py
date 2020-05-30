@@ -1,8 +1,8 @@
 import pyfastocloud_models.constants as constants
-from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, HttpProxy, Point, InputUrl, \
+from pyfastocloud_models.common_entries import Rational, Size, Logo, RSVGLogo, HostAndPort, Point, InputUrl, \
     OutputUrl
 from wtforms import Form
-from wtforms.fields import StringField, IntegerField, FormField, FloatField, SelectField, BooleanField, Field
+from wtforms.fields import StringField, IntegerField, FormField, FloatField, SelectField, Field
 from wtforms.validators import InputRequired, Length, NumberRange, Optional
 from wtforms.widgets import TextInput
 
@@ -13,20 +13,6 @@ class UrlForm(Form):
                                           Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
 
 
-class HttpProxyForm(Form):
-    uri = StringField('Url:', validators=[])
-    user = StringField('User:', validators=[])
-    password = StringField('Password:', validators=[])
-
-    def get_data(self) -> HttpProxy:
-        proxy = HttpProxy()
-        proxy_data = self.data
-        proxy.uri = proxy_data[HttpProxy.URI_FIELD]
-        proxy.user = proxy_data[HttpProxy.USER_FIELD]
-        proxy.password = proxy_data[HttpProxy.PASSWORD_FIELD]
-        return proxy
-
-
 class InputUrlForm(UrlForm):
     AVAILABLE_USER_AGENTS = [(constants.UserAgent.GSTREAMER, 'GStreamer'), (constants.UserAgent.VLC, 'VLC'),
                              (constants.UserAgent.FFMPEG, 'FFmpeg'), (constants.UserAgent.WINK, 'Wink'),
@@ -35,7 +21,8 @@ class InputUrlForm(UrlForm):
 
     user_agent = SelectField('User agent:', validators=[], choices=AVAILABLE_USER_AGENTS,
                              coerce=constants.UserAgent.coerce)
-    proxy = FormField(HttpProxyForm, 'Http proxy:', validators=[])
+    proxy = StringField('Http proxy:',
+                        validators=[Optional(), Length(min=constants.MIN_URI_LENGTH, max=constants.MAX_URI_LENGTH)])
     program_number = IntegerField('Program number:', validators=[Optional()])
     multicast_iface = StringField('Multicast iface:', validators=[])
 
@@ -51,8 +38,7 @@ class InputUrlForm(UrlForm):
             if proxy_data[InputUrl.PROGRAM_NUMBER_FIELD]:
                 url.program_number = proxy_data[InputUrl.PROGRAM_NUMBER_FIELD]
         if InputUrl.PROXY_FIELD in proxy_data:
-            if proxy_data[InputUrl.PROXY_FIELD][HttpProxy.URI_FIELD]:
-                url.proxy = HttpProxy.make_entry(proxy_data[InputUrl.PROXY_FIELD])
+            url.proxy = proxy_data[InputUrl.PROXY_FIELD]
         return url
 
 
