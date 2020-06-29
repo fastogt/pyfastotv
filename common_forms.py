@@ -37,7 +37,7 @@ class InputUrlForm(UrlForm):
         if InputUrl.PROGRAM_NUMBER_FIELD in proxy_data:
             if proxy_data[InputUrl.PROGRAM_NUMBER_FIELD]:
                 url.program_number = proxy_data[InputUrl.PROGRAM_NUMBER_FIELD]
-        if InputUrl.PROXY_FIELD in proxy_data:
+        if InputUrl.PROXY_FIELD in proxy_data and proxy_data[InputUrl.PROXY_FIELD]:
             url.proxy = proxy_data[InputUrl.PROXY_FIELD]
         return url
 
