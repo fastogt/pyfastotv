@@ -40,6 +40,7 @@ class ServiceSettingsForm(FlaskForm):
         settings.cods_directory = self.cods_directory.data
         settings.proxy_directory = self.proxy_directory.data
         settings.price = self.price.data
+        settings.monitoring = False
         return settings
 
 
