@@ -20,7 +20,6 @@ class ServiceSettingsForm(FlaskForm):
     vods_directory = StringField('Vods out directory:', validators=[InputRequired()])
     cods_directory = StringField('Cods out directory:', validators=[InputRequired()])
     proxy_directory = StringField('Proxy out directory:', validators=[InputRequired()])
-    price = FloatField('Price:', validators=[InputRequired()])
     apply = SubmitField('Apply')
 
     def make_entry(self):
@@ -39,7 +38,6 @@ class ServiceSettingsForm(FlaskForm):
         settings.vods_directory = self.vods_directory.data
         settings.cods_directory = self.cods_directory.data
         settings.proxy_directory = self.proxy_directory.data
-        settings.price = self.price.data
         settings.monitoring = False
         return settings
 
